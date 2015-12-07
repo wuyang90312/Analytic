@@ -121,18 +121,21 @@ def rank(time, db):
         if row[0] not in ranking.keys():
             ranking[row[0]] = row[2]
 
-    print "The ranking of the growth rate over last 30 days:"
+    result = ""
+    #print "The ranking of the growth rate over last 60 sec:"
     # Sort by the value in descending order
     for key, value in sorted(ranking.iteritems(), key=lambda (k,v): (v,k),reverse=True):
-        print "Domain: %s Growth rate: %s" % (key, value)
+        result += "Domain: "+ key +" Growth rate: "+str(value)+"\n"
         i+=1
         if i >= 50: #only keep the top 50
             break
 
     cursor.close()
+    return result
 
 
 def run_analytic(filepath):
+    result = "No update for any data!!!"
     try: # Build the connection with the database
         db = MySQLdb.connect('localhost', 'root', 'user1234', 'DataAnalytics')
     except:
@@ -144,11 +147,11 @@ def run_analytic(filepath):
             update_table(index, db)
     
     if 'time' in index.keys(): # Check if the dictionary is null
-        rank(index['time'],db) # Display the ranking
-    else:
-        print "No update for any data!!!"
+        result = rank(index['time'],db) # Display the ranking
 
+    #print result
     db.close() #Close the connection
+    return result
 
 #================Main Function========================#
 #filedir1 = "input/email2.csv"

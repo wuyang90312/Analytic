@@ -48,15 +48,27 @@ def analytic():
             filepath = GLB_filepath[0]
             print "At the current analytic, the file path:", filepath
             from Analytics import run_analytic
-            run_analytic(filepath)
+            result = run_analytic(filepath)
             f = open(filepath, 'w')
             f.truncate()
             f.close()
+            print "Analytic Domain: \n"+result
+            client(SUPER_IP, SUPER_PORT, result)
         else:
             #print GLB_filepath[0]
             #print GLB_filepath[1]
             # Take a 10 sec sleep if not pass 1 min duration
             time.sleep(10) 
+
+def client(ip, port, message):
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.connect((ip, port))
+    try:
+        sock.sendall(message)
+        response = sock.recv(1024)
+        #print "Received: {}".format(response)
+    finally:
+        sock.close()
 
 class ThreadedTCPRequestHandler(SocketServer.BaseRequestHandler):
 
@@ -74,6 +86,8 @@ class ThreadedTCPServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
 if __name__ == "__main__":
     # Port 0 means to select an arbitrary unused port
     HOST, PORT = "", 80
+    # The supervisor's IP and port
+    SUPER_IP, SUPER_PORT = "",80
 
     server = ThreadedTCPServer((HOST, PORT), ThreadedTCPRequestHandler)
     ip, port = server.server_address
