@@ -1,0 +1,13 @@
+CREATE DATABASE IF NOT EXISTS DataAnalytics;
+USE DataAnalytics;
+
+DROP TABLE IF EXISTS Data CASCADE;
+CREATE TABLE Data(
+  INFO varchar(255) NOT NULL);
+
+DROP TABLE IF EXISTS Analytics CASCADE;
+CREATE TABLE Analytics(
+  DOMAINs varchar(20) NOT NULL,
+  COUNTs int,
+  PERCENT double,
+  DATEs datetime NOT NULL);
