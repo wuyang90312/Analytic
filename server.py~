@@ -8,14 +8,12 @@ filedir = "input/storage1.csv"
 filedir2 = "input/storage2.csv"
 filepath = os.path.join(os.getcwd(), filedir)
 filepath2 = os.path.join(os.getcwd(), filedir2)
-
 # Store the paths to two file into the array
 # The file in first element: read by analytic
 # The file in seconde element: written by TCP_reaction
 # Every time before analytic start reading, swap the position 
 GLB_filepath = [filepath,filepath2]
 
-# Mutual lock to prevent race condition
 file_lock = threading.Lock()
 
 

@@ -132,7 +132,7 @@ def rank(time, db):
     cursor.close()
 
 
-def run_analytic(filepath):
+def run_analytic(filedir, filepath):
     try: # Build the connection with the database
         db = MySQLdb.connect('localhost', 'root', 'user1234', 'DataAnalytics')
     except:
