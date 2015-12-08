@@ -1,5 +1,6 @@
 import threading
 import SocketServer
+import socket
 import time
 import os
 import csv
@@ -62,11 +63,12 @@ def analytic():
 
 def client(ip, port, message):
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.connect((ip, port))
     try:
+        sock.connect((ip, port))
         sock.sendall(message)
         response = sock.recv(1024)
-        #print "Received: {}".format(response)
+    except socket.error as e:
+        print "SOCKET ERROR: {}".format(e)
     finally:
         sock.close()
 
@@ -87,7 +89,7 @@ if __name__ == "__main__":
     # Port 0 means to select an arbitrary unused port
     HOST, PORT = "", 80
     # The supervisor's IP and port
-    SUPER_IP, SUPER_PORT = "",80
+    SUPER_IP, SUPER_PORT = "132.206.206.133",6633
 
     server = ThreadedTCPServer((HOST, PORT), ThreadedTCPRequestHandler)
     ip, port = server.server_address

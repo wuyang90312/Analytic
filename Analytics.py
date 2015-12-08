@@ -29,7 +29,11 @@ def categorize(filepath, db):
             # extract the domain name from data
             import re
             namelist = re.split('@',data)
-            domain = namelist[1].lower() # make all the domain strings to lower case
+            try:
+                domain = namelist[1].lower() # make all the domain strings to lower case
+            except IndexError:
+                print "ERROR: Out of Index"
+
             if domain not in dict.keys():
                 dict[domain] = 1
             else:
